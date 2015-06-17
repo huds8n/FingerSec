@@ -57,6 +57,10 @@
 				<p:inputText id="estoque" size="40" maxlength="40"
 					value="#{empresaBean.empresa.nomeResponsavel}" />
 
+				<p:outputLabel value="Fone Responsavél" for="estoque7" />
+				<p:inputMask mask="(99)9999-9999" id="estoque7" size="40"
+					maxlength="40" value="#{empresaBean.empresa.descricao}" />
+
 				<p:outputLabel value="Endereço" for="estoque1" />
 				<p:inputText id="estoque1" size="40" maxlength="40"
 					value="#{empresaBean.empresa.endereco}" />
@@ -65,25 +69,51 @@
 				<p:inputText id="estoque2" size="40" maxlength="40"
 					value="#{empresaBean.empresa.cidade}" />
 
-				<p:outputLabel value="UF" for="estoque3" />
-				<p:inputText id="estoque3" size="40" maxlength="40"
-					value="#{empresaBean.empresa.uf}" />
+				<p:outputLabel value="UF:" styleClass="textoNegro" for="uf" />
+				<p:selectOneMenu id="uf" value="#{empresaBean.empresa.uf}">
+					<f:selectItem itemLabel="DF" itemValue="DF" />
+					<f:selectItem itemLabel="AC" itemValue="AC" />
+					<f:selectItem itemLabel="AL" itemValue="AL" />
+					<f:selectItem itemLabel="AP" itemValue="AP" />
+					<f:selectItem itemLabel="AM" itemValue="AM" />
+					<f:selectItem itemLabel="BA" itemValue="BA" />
+					<f:selectItem itemLabel="CE" itemValue="CE" />
+					<f:selectItem itemLabel="ES" itemValue="ES" />
+					<f:selectItem itemLabel="GO" itemValue="GO" />
+					<f:selectItem itemLabel="MA" itemValue="MA" />
+					<f:selectItem itemLabel="MT" itemValue="MT" />
+					<f:selectItem itemLabel="MS" itemValue="MS" />
+					<f:selectItem itemLabel="MG" itemValue="MG" />
+					<f:selectItem itemLabel="PA" itemValue="PA" />
+					<f:selectItem itemLabel="PB" itemValue="PB" />
+					<f:selectItem itemLabel="PR" itemValue="PR" />
+					<f:selectItem itemLabel="PE" itemValue="PE" />
+					<f:selectItem itemLabel="PI" itemValue="PI" />
+					<f:selectItem itemLabel="RJ" itemValue="RJ" />
+					<f:selectItem itemLabel="RN" itemValue="RN" />
+					<f:selectItem itemLabel="RS" itemValue="RS" />
+					<f:selectItem itemLabel="RO" itemValue="RO" />
+					<f:selectItem itemLabel="RR" itemValue="RR" />
+					<f:selectItem itemLabel="SC" itemValue="SC" />
+					<f:selectItem itemLabel="SP" itemValue="SP" />
+					<f:selectItem itemLabel="SE" itemValue="SE" />
+					<f:selectItem itemLabel="TO" itemValue="TO" />
+				</p:selectOneMenu>
+
 
 				<p:outputLabel value="Cep" for="estoque4" />
-				<p:inputText id="estoque4" size="40" maxlength="40"
-					value="#{empresaBean.empresa.cep}" />
+				<p:inputMask mask="99.999-999" id="estoque4" size="40"
+					maxlength="40" value="#{empresaBean.empresa.cep}" />
 
 				<p:outputLabel value="Email" for="estoque5" />
 				<p:inputText id="estoque5" size="40" maxlength="40"
 					value="#{empresaBean.empresa.email}" />
 
 				<p:outputLabel value="Fone" for="estoque6" />
-				<p:inputText id="estoque6" size="40" maxlength="40"
-					value="#{empresaBean.empresa.fone}" />
+				<p:inputMask mask="(99)9999-9999" id="estoque6" size="40"
+					maxlength="40" value="#{empresaBean.empresa.fone}" />
 
-				<p:outputLabel value="Fone" for="estoque7" />
-				<p:inputText id="estoque7" size="40" maxlength="40"
-					value="#{empresaBean.empresa.descricao}" />
+
 
 
 			</p:panelGrid>

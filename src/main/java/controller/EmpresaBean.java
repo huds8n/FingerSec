@@ -24,7 +24,7 @@ public class EmpresaBean implements Serializable {
 	private EmpresaService empresaService;
 
 	public EmpresaBean() {
-		
+		inicializar();
 	}
 
 	public void inicializar() {
