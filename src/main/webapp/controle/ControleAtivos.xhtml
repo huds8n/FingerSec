@@ -10,7 +10,6 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 	<f:metadata>
-
 		<f:viewParam name="dummy" />
 		<f:event listener="#{verificaBean.listarHoje()}" type="preRenderView" />
 	</f:metadata>
@@ -189,7 +188,9 @@
 				rowStyleClass="#{entrada.status eq 'INATIVO' ? 'inativo' : null}">
 
 
-				<p:column headerText="Nome" style="text-align:center !important;">
+				<p:column headerText="Nome" style="text-align:center !important;"
+					filterBy="#{entrada.funcionario.nome}" filterMatchMode="contains"
+					sortBy="#{entrada.funcionario.nome}">
 					<h:outputText value="#{entrada.funcionario.nome}" />
 				</p:column>
 

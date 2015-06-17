@@ -37,7 +37,11 @@ public class VerificaBean implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4145284746237932468L;
+	private static final long serialVersionUID = 1131534208701139185L;
+	/**
+	 * 
+	 */
+
 	private Funcionario funcionario;
 	private List<Funcionario> listaFuncionarios = new ArrayList<Funcionario>();
 	private List<Funcionario> listaPesquisa = new ArrayList<Funcionario>();
@@ -93,9 +97,13 @@ public class VerificaBean implements Serializable {
 	}
 
 	public void listarHoje() throws NegocioException {
-
-		entradas = new ArrayList<Entrada>();
-		entradas = entradaService.listarPorData(new java.util.Date());
+		if (!FacesContext.getCurrentInstance().isPostback()) {
+			erro = 0;
+			exibirPainel = false;
+			entradas = new ArrayList<Entrada>();
+			entradas = entradaService.listarPorData(new java.util.Date());
+			System.out.println("LISTOU HOJE");
+		}
 	}
 
 	public void salvarEntrada() {
@@ -131,12 +139,12 @@ public class VerificaBean implements Serializable {
 	public void verificar() {
 		templateEnviado = DPFPGlobal.getFeatureSetFactory().createFeatureSet(
 				hexStringToByteArray(strDigital));
-		for (Funcionario func : listaFuncionarios) {
+
+		for (int i = 0; i < listaFuncionarios.size(); i++) {
+			Funcionario func = listaFuncionarios.get(i);
 			if (dedo.equalsIgnoreCase("Direito")) {
-				System.out.println("Direito");
 				templateArmazenado.deserialize(func.getIndicadorDireito());
 			} else {
-				System.out.println("Esquerdo");
 				templateArmazenado.deserialize(func.getIndicadorEsquerdo());
 			}
 			result = verificator.verify(templateEnviado, templateArmazenado);
@@ -149,18 +157,16 @@ public class VerificaBean implements Serializable {
 				erro = 0;
 				// SALVANDO ENTRADA
 				salvarEntrada();
-				System.out.println("VERIFICADO");
-				FacesUtil.addInfoMessage("VERIFICADO");
 				return;
-			} else {
+			}
+
+			if (listaFuncionarios.size() - 1 == i) {
 				exibirPainel = false;
 				if (erro > 2) {
 					erro = 0;
 					dedo = "Direito";
 
 				}
-				System.out.println(erro);
-				this.funcionario = new Funcionario();
 				alerta = "toydoorbell.wav";
 				if (erro == 0) {
 					som = "restrito_tentenovamente.mpeg";
@@ -174,7 +180,6 @@ public class VerificaBean implements Serializable {
 					som = "bloqueado_chame_agente.mpeg";
 					dedo = "Direito";
 				}
-				funcionario = new Funcionario();
 				erro++;
 				FacesUtil.addErrorMessage("ACESSO NEGADO");
 
@@ -182,62 +187,61 @@ public class VerificaBean implements Serializable {
 		}
 
 	}
-	
+
 	public void verificarSaida() {
 		templateEnviado = DPFPGlobal.getFeatureSetFactory().createFeatureSet(
 				hexStringToByteArray(strDigital));
-		for (Entrada entrada : entradas) {
+		for (int i = 0; i < entradas.size(); i++) {
+			Entrada entr = entradas.get(i);
 			if (dedo.equalsIgnoreCase("Direito")) {
 				System.out.println("Direito");
-				templateArmazenado.deserialize(entrada.getFuncionario().getIndicadorDireito());
+				templateArmazenado.deserialize(entr.getFuncionario()
+						.getIndicadorDireito());
 			} else {
 				System.out.println("Esquerdo");
-				templateArmazenado.deserialize(entrada.getFuncionario().getIndicadorEsquerdo());
+				templateArmazenado.deserialize(entr.getFuncionario()
+						.getIndicadorEsquerdo());
 			}
 			result = verificator.verify(templateEnviado, templateArmazenado);
 			if (result.isVerified()) {
 				dedo = "Direito";
-				this.entrada = entrada;
-				this.funcionario = entrada.getFuncionario();
+				this.entrada = entr;
+				this.funcionario = entr.getFuncionario();
 				alerta = "ekiga-vm.wav";
-				som = "liberado.mpeg";
+				som = "saidaAutorizada.mpeg";
 				exibirPainel = true;
 				erro = 0;
 				// SALVANDO SAIDA
-				salvarSaida();				
-				FacesUtil.addInfoMessage("SAIDA");
+				salvarSaida();
 				return;
-			} else {
+			}
+			
+			if (entradas.size() - 1 == i) {
 				exibirPainel = false;
 				if (erro > 2) {
 					erro = 0;
 					dedo = "Direito";
 
 				}
-				System.out.println(erro);
-				this.funcionario = new Funcionario();
 				alerta = "toydoorbell.wav";
 				if (erro == 0) {
-					som = "restrito_tentenovamente.mpeg";
+					som = "saidatentenovamente.mpeg";
 				}
 				if (erro == 1) {
-					som = "restrito_indicadoresquerdo.mpeg";
+					som = "saidaindicadoresquerdo.mpeg";
 					dedo = "Esquerdo";
 					System.out.println("Dedo: " + dedo);
 				}
 				if (erro == 2) {
-					som = "bloqueado_chame_agente.mpeg";
+					som = "saida_chameoagente.mpeg";
 					dedo = "Direito";
 				}
-				funcionario = new Funcionario();
 				erro++;
 				FacesUtil.addErrorMessage("ACESSO NEGADO");
-
 			}
 		}
 
 	}
-
 
 	public void inativar() {
 		funcionario.setStatus(false);
