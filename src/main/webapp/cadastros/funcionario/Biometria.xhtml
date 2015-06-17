@@ -1,0 +1,179 @@
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;">
+    <!ENTITY bull "&#8226;">
+    <!ENTITY copy "&#169;">
+]>
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Cadastro Funcionario</ui:define>
+
+	<ui:define name="corpo">
+		<script>
+			var _app = navigator.appName;
+			var index = 0;
+
+			readyimg = new Image();
+			readyimg.src = "./images/waitingleftindex.gif";
+
+			disconnectedimg = new Image();
+			disconnectedimg.src = "./images/uodisconnected.gif";
+
+			fingertouchimg = new Image();
+			fingertouchimg.src = "./images/touched.gif";
+
+			datacapturedimg = new Image();
+			datacapturedimg.src = "./images/datacaptured2.gif";
+
+			fingergoneimg = new Image();
+			fingergoneimg.src = "./images/waitingleftindex.gif";
+
+			function onFeaturesAcquiredHandler() {
+				document.uareulogo.src = datacapturedimg.src;
+				//document.registerForm.submit();
+			}
+
+			function onTemplateHandler() {
+				if (_app == "Microsoft Internet Explorer") {
+					if (index == 0) {
+						document.registerForm.htbTemplate.value = document.applets["regAppletIE"]
+								.getData();
+						readyimg.src = "./images/waitingrightindex.gif";
+						fingergoneimg.src = readyimg.src;
+						document.uareulogo.src = readyimg.src;
+						document.getElementById("instruction").innerHTML = "Pressione seu dedo indicador direito 4 vezes com firmeza sobre sensor.<br/>";
+						++index;
+						document.registerForm.htbTemplateIndex.value = "4";
+					} else {
+						document.registerForm.htbTemplate2.value = document.applets["regAppletIE"]
+								.getData();
+						document.applets["regAppletIE"].stopCapture();
+						document.getElementById("instruction").innerHTML = "";
+						document.getElementById("imgHolder").innerHTML = "";
+						index = 0;
+						document.registerForm.htbTemplateIndex2.value = "7";
+					}
+
+				} else if (_app == "Netscape") {
+					if (index == 0) {
+						document.registerForm.htbTemplate.value = document.regAppletFF
+								.getData();
+						readyimg.src = "./images/waitingrightindex.gif";
+						fingergoneimg.src = readyimg.src;
+						document.uareulogo.src = readyimg.src;
+						document.getElementById("instruction").innerHTML = "Pressione seu dedo indicador direito 4 vezes com firmeza sobre o sensor.<br/>";
+						++index;
+						document.registerForm.htbTemplateIndex.value = "4";
+					} else {
+						document.registerForm.htbTemplate2.value = document.regAppletFF
+								.getData();
+						document.regAppletFF.stopCapture();
+						document.getElementById("instruction").innerHTML = "";
+						document.getElementById("imgHolder").innerHTML = "";
+						index = 0;
+						document.registerForm.htbTemplateIndex2.value = "7";
+					}
+				}
+			}
+
+			function onDevConnectedHandler() {
+				document.uareulogo.src = readyimg.src;
+			}
+
+			function onDevDisconnectedHandler() {
+				document.uareulogo.src = disconnectedimg.src;
+			}
+
+			function onFingerTouchedHandler() {
+				document.uareulogo.src = fingertouchimg.src;
+			}
+
+			function onFingerGoneHandler() {
+				document.uareulogo.src = fingergoneimg.src;
+			}
+
+			function onBadPressHandler() {
+				alert("Bad press, try again.");
+			}
+
+			function onErrorHandler() {
+				alert("Error reported from applet");
+			}
+		</script>
+
+		<form action="${pageContext.request.contextPath}/Inclui" method="post"
+			name="registerForm" id="registerForm">
+
+
+			<input type="checkbox" name="startreg" id="startreg" value="ON"
+				onclick="handleClick()" /> Registrar Biometria
+
+			<div id="instruction"></div>
+			<div id="imgHolder"></div>
+			<div id="bioHolder"></div>
+			<br /> <input name="btnSubmit" type="Submit" value="Submit" /> <input
+				id="nmr" name="htbTemplate" type="text" readonly="true" value="" /><input
+				name="htbTemplateIndex" id="htbTemplateIndex" type="text" value=""
+				style="width: 20px" /> <input id="nmr2" name="htbTemplate2" type="text"
+				readonly="true" /> <input name="htbTemplateIndex2"
+				id="htbTemplateIndex2" type="text" value="" style="width: 20px" />
+
+		</form>
+
+		<h:form id="frm">
+			Dedo Esquerdo<p:inputText value="#{funcionarioBean.strUm}" id="teste" /><br/>
+			Dedo Direito<p:inputText value="#{funcionarioBean.strDois}" id="teste2" /><br/>
+			<p:button  onclick="pegarValor()" value="Teste"  />
+		</h:form>
+		<script>
+			function pegarValor() {
+				var str = document.getElementById("nmr").value;
+				document.getElementById("frm:teste").value = str;
+				var str1 = document.getElementById("nmr2").value;
+				document.getElementById("frm:teste2").value = str1;
+				alert(str + str1);
+			}
+		</script>
+		<script>
+			function handleClick() {
+
+				var _app = navigator.appName;
+				readyimg.src = "./images/waitingleftindex.gif";
+
+				if (document.getElementById("startreg").checked == false) {
+					//clear innerHTML
+					document.getElementById("bioHolder").innerHTML = "";
+					document.getElementById("instruction").innerHTML = "";
+					document.getElementById("imgHolder").innerHTML = "";
+					return;
+				}
+
+				document.getElementById("instruction").innerHTML = "Pressione seu dedo indicador esquerdo 4 vezes com firmeza sobre sensor.<br/>";
+				document.getElementById("imgHolder").innerHTML = '<img id="uareulogo" name="uareulogo" src="./images/uoenabled.gif" border="0" alt="PLEASE PLACE YOUR FINGER ON THE SENSOR!" align="left" /><br/><br/><br/>';
+
+				if (_app == "Microsoft Internet Explorer") {
+
+					objectString = '<embed code="applettest.Main" name="regAppletFF" width="0" height="0" type="application/x-java-applet" pluginspage="http://java.sun.com/javase/downloads" archive="http://localhost/Teste1/RegisterNonGuiApplet.jar" ondevconnectedscript="onDevConnectedHandler" ondevdisconnectedscript="onDevDisconnectedHandler" onfeaturesacquiredscript="onFeaturesAcquiredHandler" onfingertouchedscript="onFingerTouchedHandler" onfingergonescript="onFingerGoneHandler" onerrorscript="onErrorHandler" ontemplateacquiredscript="onTemplateHandler" onbadpressscript="onBadPressHandler" purpose="enrollment" priority="low" scriptable="true" mayscript="true" />';
+
+					document.getElementById("bioHolder").innerHTML = objectString;
+
+				} else if (_app == "Netscape") {
+
+					var objectString = new String();
+
+					objectString = '<embed code="applettest.Main" name="regAppletFF" width="0" height="0" type="application/x-java-applet" pluginspage="http://java.sun.com/javase/downloads" archive="http://localhost/Teste1/RegisterNonGuiApplet.jar" ondevconnectedscript="onDevConnectedHandler" ondevdisconnectedscript="onDevDisconnectedHandler" onfeaturesacquiredscript="onFeaturesAcquiredHandler" onfingertouchedscript="onFingerTouchedHandler" onfingergonescript="onFingerGoneHandler" onerrorscript="onErrorHandler" ontemplateacquiredscript="onTemplateHandler" onbadpressscript="onBadPressHandler" purpose="enrollment" priority="low" scriptable="true" mayscript="true" />';
+
+					document.getElementById("bioHolder").innerHTML = objectString;
+				} else {
+					//Browser not FF or IE, use Applet tag for highest compatibility
+				}
+
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>

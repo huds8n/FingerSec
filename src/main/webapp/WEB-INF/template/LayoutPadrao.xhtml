@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;">
+    <!ENTITY bull "&#8226;">
+    <!ENTITY copy "&#169;">
+]>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="shortcut icon"
+		href="#{facesContext.externalContext.request.contextPath}/resources/images/favicon.ico"
+		title="Favicon" />
+	<title><ui:insert name="titulo">Sistema de Pedidos de Venda</ui:insert></title>
+	<h:outputStylesheet library="css" name="sistema.css" />
+
+</h:head>
+
+<h:body>
+	<p:ajaxStatus styleClass="ajax-status">
+		<f:facet name="start">
+			<h:graphicImage library="images" name="loading.gif" />
+		</f:facet>
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+
+	<header>
+
+
+		<div style="float: right; margin-right: 110px">
+			<span
+				style="float: left; height: 30px; line-height: 30px; margin-right: 60px">
+				Olá #{seguranca.nomeUsuario}! </span>
+
+			<h:form style="display: inline-block">
+				<p:menubar styleClass="menu-sistema">
+					<p:menuitem value="Home" outcome="/Home" icon="fa fa-home" />
+					<p:submenu label="Cadastros" icon="fa fa-folder-open-o">
+						<p:menuitem value=" Empresas" icon="fa fa-bank"
+							outcome="/cadastros/empresa/CadastroEmpresa.xhtml" />
+						<p:separator />
+						<p:menuitem value=" Terceirizados" icon="fa fa-users"
+							outcome="/cadastros/funcionario/CadastroFuncionario.xhtml" />
+					</p:submenu>
+
+					<p:submenu label="Controle" icon="fa fa-refresh">
+						<p:menuitem value="Entrada" icon="fa fa-mail-forward"
+							outcome="/controle/ControleEntrada.xhtml" />
+						<p:separator />
+						<p:menuitem value="Saida" icon="fa fa-mail-reply"
+							outcome="/controle/ControleAtivos.xhtml" />
+					</p:submenu>
+
+					<p:submenu label="Relatorios" icon="fa fa-file-o">
+						<p:menuitem value=" Geral" icon="fa fa-file-pdf-o"
+							outcome="/relatorios/RelatorioEntrada.xhtml" />
+						<p:separator />
+
+
+					</p:submenu>
+
+					<p:menuitem value="Sair" url="/j_spring_security_logout"
+						icon="fa fa-sign-out" />
+
+				</p:menubar>
+			</h:form>
+		</div>
+		<div style="clear: both"></div>
+	</header>
+
+	<div id="conteudo">
+		<ui:insert name="corpo" />
+	</div>
+
+	<p:separator style="margin-top: 20px" />
+
+	<footer>
+		H8 Desenvolvimento de Sistemas - <a href="http://bit.ly/Y8saFl"
+			target="_blank">www.h8sistemas.com</a>
+	</footer>
+
+	<script type="text/javascript">
+		PrimeFaces.locales['pt_BR'] = {
+			closeText : 'Fechar',
+			prevText : 'Anterior',
+			nextText : 'Próximo',
+			currentText : 'Começo',
+			monthNames : [ 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio',
+					'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro',
+					'Novembro', 'Dezembro' ],
+			monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+					'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez' ],
+			dayNames : [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta',
+					'Sexta', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb' ],
+			dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S', 'S' ],
+			weekHeader : 'Semana',
+			firstDay : 1,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Só Horas',
+			timeText : 'Tempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Data Atual',
+			ampm : false,
+			month : 'Mês',
+			week : 'Semana',
+			day : 'Dia',
+			allDayText : 'Todo Dia'
+		};
+	</script>
+
+</h:body>
+
+</html>

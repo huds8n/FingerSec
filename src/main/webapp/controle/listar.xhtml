@@ -1,0 +1,62 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<f:metadata>
+		<f:viewParam name="funcionario" value="#{funcionario}" />
+		<f:viewParam name="dummy" />
+		<f:event listener="#{movimentosBean.preRender(funcionario)}"
+			type="preRenderView" />
+	</f:metadata>
+	<ui:define name="titulo">Relatório de Movimentação</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPrincipal">
+
+			<p:dataTable id="data" emptyMessage="" var="entrada"
+				value="#{movimentosBean.entradas}">
+
+				<f:facet name="header">
+					<h:outputText value="#{movimentosBean.pegarNome()}" />
+				</f:facet>
+
+
+
+				<p:column headerText="Data"
+					style="width:60px;text-align:center !important;">
+					<h:outputText value="#{entrada.data}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Hora Entrada"
+					style="width:40px;text-align:center !important;">
+					<h:outputText value="#{entrada.data}">
+						<f:convertDateTime pattern="HH:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Hora Saída"
+					style="width:40px;text-align:center !important;">
+					<h:outputText value="#{entrada.horaSaida}">
+						<f:convertDateTime pattern="HH:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Observação">
+					<h:outputText value="#{entrada.observacao}" />
+				</p:column>
+
+				<p:column headerText="Status" style="width:100px;text-align:center !important;">
+					<h:outputText value="#{entrada.status}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,92 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Nova Empresa</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frm">
+			<p:focus context="frm" />
+
+			<h1>Nova Empresa</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 20px">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/cadastros/empresa/CadastroEmpresa"
+						icon="fa fa-plus" />
+					<p:commandButton value="Salvar" id="botaoSalvar" icon="fa fa-save"
+						action="#{empresaBean.salvar}" update="@form"
+						validateClient="false" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" icon="fa fa-search" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="4" id="painel"
+				style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+				<p:outputLabel value="Tipo" for="categoria" />
+				<p:selectOneMenu id="categoria" value="#{empresaBean.tipoPessoa}">
+					<f:selectItem itemLabel="Selecione o tipo" />
+					<f:selectItems value="#{empresaBean.tipos}" />
+					<p:ajax listener="#{empresaBean.pegarMascara}"
+						update="valorUnitario" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Razão Social" for="sku" />
+				<p:inputText id="sku" size="40" maxlength="20"
+					value="#{empresaBean.empresa.razãoSocial}" />
+
+				<p:outputLabel value="Nome Fantasia" for="nome" />
+				<p:inputText id="nome" size="40" maxlength="80"
+					value="#{empresaBean.empresa.nomeFantasia}" />
+
+
+				<p:outputLabel value="CNPJ |CPF" for="valorUnitario" />
+				<p:inputMask id="valorUnitario" size="40" mask="#{empresaBean.mask}"
+					value="#{empresaBean.empresa.cnpj}">
+				</p:inputMask>
+
+				<p:outputLabel value="Responsavél" for="estoque" />
+				<p:inputText id="estoque" size="40" maxlength="40"
+					value="#{empresaBean.empresa.nomeResponsavel}" />
+
+				<p:outputLabel value="Endereço" for="estoque1" />
+				<p:inputText id="estoque1" size="40" maxlength="40"
+					value="#{empresaBean.empresa.endereco}" />
+
+				<p:outputLabel value="Cidade" for="estoque2" />
+				<p:inputText id="estoque2" size="40" maxlength="40"
+					value="#{empresaBean.empresa.cidade}" />
+
+				<p:outputLabel value="UF" for="estoque3" />
+				<p:inputText id="estoque3" size="40" maxlength="40"
+					value="#{empresaBean.empresa.uf}" />
+
+				<p:outputLabel value="Cep" for="estoque4" />
+				<p:inputText id="estoque4" size="40" maxlength="40"
+					value="#{empresaBean.empresa.cep}" />
+
+				<p:outputLabel value="Email" for="estoque5" />
+				<p:inputText id="estoque5" size="40" maxlength="40"
+					value="#{empresaBean.empresa.email}" />
+
+				<p:outputLabel value="Fone" for="estoque6" />
+				<p:inputText id="estoque6" size="40" maxlength="40"
+					value="#{empresaBean.empresa.fone}" />
+
+				<p:outputLabel value="Fone" for="estoque7" />
+				<p:inputText id="estoque7" size="40" maxlength="40"
+					value="#{empresaBean.empresa.descricao}" />
+
+
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

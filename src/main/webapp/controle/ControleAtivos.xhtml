@@ -1,0 +1,300 @@
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;">
+    <!ENTITY bull "&#8226;">
+    <!ENTITY copy "&#169;">
+]>
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+	<f:metadata>
+
+		<f:viewParam name="dummy" />
+		<f:event listener="#{verificaBean.listarHoje()}" type="preRenderView" />
+	</f:metadata>
+	<ui:define name="titulo">Saída</ui:define>
+
+	<ui:define name="corpo">
+		<script>
+			readyimg = new Image();
+			readyimg.src = "../images/waiting.gif";
+
+			disconnectedimg = new Image();
+			disconnectedimg.src = "../images/uodisconnected.gif";
+
+			fingertouchimg = new Image();
+			fingertouchimg.src = "../images/touched.gif";
+
+			datacapturedimg = new Image();
+			datacapturedimg.src = "../images/datacaptured2.gif";
+
+			fingergoneimg = new Image();
+			fingergoneimg.src = "../images/waiting.gif";
+
+			function onFeaturesAcquiredHandler() {
+				document.uareulogo.src = datacapturedimg.src;
+				document.loginForm.htbFeatureSet.value = document.vercontrol
+						.getFeatures();
+				pegarValor();
+				//document.loginForm.submit();
+				document.getElementById('loginForm:botaoEnviar').click();
+			}
+
+			function onDevConnectedHandler() {
+				document.uareulogo.src = readyimg.src;
+			}
+
+			function onDevDisconnectedHandler() {
+				document.uareulogo.src = disconnectedimg.src;
+			}
+
+			function onFingerTouchedHandler() {
+				document.uareulogo.src = fingertouchimg.src;
+			}
+
+			function onFingerGoneHandler() {
+				document.uareulogo.src = fingergoneimg.src;
+			}
+
+			function onErrorHandler() {
+				alert("Error reported from applet");
+			}
+		</script>
+
+		<h:form name="loginForm" id="loginForm">
+			<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+				<p:outputLabel for="console" value="Indicador: " />
+				<p:selectOneRadio id="console" value="#{verificaBean.dedo}">
+					<f:selectItem itemLabel="Direito" itemValue="Direito" />
+					<f:selectItem itemLabel="Esquerdo" itemValue="Esquerdo" />
+				</p:selectOneRadio>
+			</h:panelGrid>
+
+
+			<p align="center">
+				<img id="uareulogo" name="uareulogo" src="../images/uoenabled.gif"
+					border="0" alt="PRESSIONE SEU DEDO SOBRE O SENSOR" align="left" />
+			</p>
+
+
+			<object type="application/x-java-applet" name="vercontrol" width="0"
+				height="50">
+				<param name="code" value="applettest.Main" />
+				<param name="archive"
+					value="http://localhost/Teste1/VerificationNonGuiApplet.jar" />
+				<param name="separate_jvm" VALUE="true" />
+				<param name="onDevConnectedScript" value="onDevConnectedHandler" />
+				<param name="onDevDisconnectedScript"
+					value="onDevDisconnectedHandler" />
+				<param name="onFeaturesAcquiredScript"
+					value="onFeaturesAcquiredHandler" />
+				<param name="onFingerTouchedScript" value="onFingerTouchedHandler" />
+				<param name="onFingerGoneScript" value="onFingerGoneHandler" />
+				<param name="onErrorScript" value="onErrorHandler" />
+				<param name="java_arguments" value="-Djnlp.packEnabled=true" />
+				Applet failed to run. No Java plug-in was found.
+			</object>
+			<br />
+			<br />
+			<br />
+			<input name="htbFeatureSet" id="htbFeatureSet" type="hidden"
+				readonly="readonly" />
+			<h:inputText value="#{verificaBean.strDigital}" id="teste"
+				style="display:none;" />
+			<div style="display: none;">
+				<p:commandButton value="Salvar" id="botaoEnviar"
+					update="frm2 :loginForm:console :formPesquisar"
+					action="#{verificaBean.verificarSaida}" oncomplete="afterLoad()" />
+			</div>
+
+
+
+
+		</h:form>
+		<h:form id="frm2">
+
+			<p:messages id="msg" closable="true">
+				<p:effect type="pulsate" event="load" delay="500" />
+			</p:messages>
+
+			<audio id="alerta" src="media/audio/#{verificaBean.alerta}" />
+			<audio id="som" src="media/audio/#{verificaBean.som}" />
+
+			<p:outputPanel rendered="#{verificaBean.exibirPainel}" id="painel"
+				style="left:63%; top:50px; position:absolute;border:2px solid black"
+				autoUpdate="true">
+				<p:panelGrid columns="2" rendered="#{verificaBean.exibirPainel}">
+					<f:facet name="header">
+						<p:graphicImage value="#{verificaBean.imagemDinamica}" id="foto"
+							rendered="#{verificaBean.exibirPainel}"
+							style="width:160px;height:160px" cache="false">
+							<f:param name="id_imagem" value="#{verificaBean.funcionario.id}" />
+						</p:graphicImage>
+					</f:facet>
+				</p:panelGrid>
+			</p:outputPanel>
+			<p:outputPanel rendered="#{verificaBean.exibirPainel}" id="painelS"
+				style="left:80%; top:50px; position:absolute;border:2px solid black"
+				autoUpdate="true">
+				<p:panelGrid columns="2" rendered="#{verificaBean.exibirPainel}">
+					<h:outputText value="Nome:" />
+					<h:outputText value="#{verificaBean.funcionario.nome}" />
+
+					<h:outputText value="Empresa:" />
+					<h:outputText
+						value="#{verificaBean.funcionario.empresa.nomeFantasia}" />
+
+					<h:outputText value="RG:" />
+					<h:outputText value="#{verificaBean.funcionario.rg}" />
+
+					<h:outputText value="CPF:" />
+					<h:outputText value="#{verificaBean.funcionario.cpf}" />
+				</p:panelGrid>
+			</p:outputPanel>
+		</h:form>
+
+		<script>
+			function afterLoad() {
+
+				document.getElementById("alerta").play();
+				click();
+
+			}
+			function click() {
+				setTimeout(function() {
+					document.getElementById("som").play();
+				}, 600);
+
+			}
+		</script>
+		<script>
+			function pegarValor() {
+				var str = document.getElementById("htbFeatureSet").value;
+				document.getElementById("loginForm:teste").value = str;
+
+			}
+		</script>
+		<div align="center">
+			<h:outputText style="font-size: 20px;color: #080400;"
+				value="CONTROLE DE SAÍDAS" />
+		</div>
+		<p:separator />
+		<h:form id="formPesquisar">
+
+
+			<p:dataTable id="data" emptyMessage="" var="entrada"
+				value="#{verificaBean.entradas}"
+				rowStyleClass="#{entrada.status eq 'INATIVO' ? 'inativo' : null}">
+
+
+				<p:column headerText="Nome" style="text-align:center !important;">
+					<h:outputText value="#{entrada.funcionario.nome}" />
+				</p:column>
+
+				<p:column headerText="Empresa" style="text-align:center !important;">
+					<h:outputText value="#{entrada.funcionario.empresa.nomeFantasia}" />
+				</p:column>
+
+				<p:column headerText="Observações"
+					style="text-align:center !important;">
+					<h:outputText value="#{entrada.observacao}" />
+				</p:column>
+
+				<p:column headerText="Status"
+					style="width:60px;text-align:center !important;">
+					<h:outputText value="#{entrada.status}" />
+
+				</p:column>
+
+				<p:column headerText="Hora Entrada"
+					style="width:40px;text-align:center !important;">
+					<h:outputText value="#{entrada.data}">
+						<f:convertDateTime pattern="HH:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Hora Saída"
+					style="width:40px;text-align:center !important;">
+					<h:outputText value="#{entrada.horaSaida}">
+						<f:convertDateTime pattern="HH:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Opções" style="width:100px;">
+					<p:commandButton icon="fa fa-sign-out" title="Registrar Saída"
+						action="#{verificaBean.salvarSaida}" update="@form"
+						rendered="#{entrada.status eq 'ATIVO'}">
+						<f:setPropertyActionListener value="#{entrada}"
+							target="#{verificaBean.entrada}" />
+					</p:commandButton>
+					<p:commandButton update=":formPesquisar:carDetail" icon="fa fa-eye"
+						oncomplete="PF('carDialog').show()" title="Visualizar Foto">
+						<f:setPropertyActionListener value="#{entrada.funcionario}"
+							target="#{verificaBean.funcionario}" />
+					</p:commandButton>
+
+
+					<p:button outcome="listar" title="Listar Entradas"
+						icon="fa fa-list">
+						<f:param name="funcionario" value="#{entrada.funcionario.id}" />
+					</p:button>
+
+				</p:column>
+
+
+			</p:dataTable>
+
+
+
+
+
+
+			<p:dialog header="Funcionario Detalhe" widgetVar="carDialog"
+				modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+				<p:outputPanel id="carDetail" style="text-align:center;">
+					<p:panelGrid columns="2" columnClasses="label,value">
+						<f:facet name="header">
+							<p:graphicImage value="#{verificaBean.imagemDinamica}" id="foto"
+								style="width:160px;height:160px" cache="false">
+								<f:param name="id_imagem" value="#{verificaBean.funcionario.id}" />
+							</p:graphicImage>
+						</f:facet>
+
+						<h:outputText value="Nome:" />
+						<h:outputText value="#{verificaBean.funcionario.nome}" />
+
+						<h:outputText value="Motivo Inativo: "
+							rendered="#{not empty verificaBean.funcionario.motivoInativo}" />
+						<h:outputText value="#{verificaBean.funcionario.motivoInativo}"
+							rendered="#{not empty verificaBean.funcionario.motivoInativo}" />
+
+						<h:outputText value="Empresa:" />
+						<h:outputText
+							value="#{verificaBean.funcionario.empresa.nomeFantasia}" />
+
+						<h:outputText value="RG:" />
+						<h:outputText value="#{verificaBean.funcionario.rg}" />
+
+						<h:outputText value="CPF:" />
+						<h:outputText value="#{verificaBean.funcionario.cpf}" />
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+
+		</h:form>
+
+
+		<style type="text/css">
+.inativo {
+	background-color: #FF6347 !important;
+}
+
+.ui-panelgrid td, .ui-panelgrid tr {
+	border-style: none !important
+}
+</style>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,14 @@
+/cdi/
+/com/
+/controller/
+/converter/
+/filter/
+/jpa/
+/jsf/
+/mail/
+/model/
+/report/
+/repository/
+/security/
+/service/
+/vo/

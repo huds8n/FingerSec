@@ -1,0 +1,355 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Cadastro Funcionario</ui:define>
+
+	<ui:define name="corpo">
+		<style type="text/css">
+.label {
+	width: 20%;
+	padding: 4px;
+}
+
+.value {
+	width: 80%;
+	padding: 4px;
+}
+
+.grid {
+	width: 100%;
+}
+
+.error {
+	color: red;
+}
+
+.outputLabel {
+	font-weight: bold;
+}
+
+.grid {
+	width: 33%;
+	padding: 4px;
+}
+</style>
+
+
+		<f:metadata>
+
+			<f:viewAction action="#{funcionarioBean.buscar}" />
+		</f:metadata>
+
+		<p:focus context="frm" />
+
+		<h1>Novo Funcionario</h1>
+		<h:form id="frm">
+
+			<p:wizard flowListener="#{funcionarioBean.onFlowProcess}">
+				<p:tab id="personal" title="Dados">
+					<p:panel header="Dados Pessoais">
+						<p:messages id="msg" closable="true">
+							<p:effect type="pulsate" event="load" delay="500" />
+						</p:messages>
+
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Empresa:*" />
+							<p:selectOneMenu id="console" required="true"
+								value="#{funcionarioBean.idEmpresa}">
+								<f:selectItem itemLabel="Selecione a Empresa" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{funcionarioBean.listaEmpresas}"
+									var="empresa" itemLabel="#{empresa.nomeFantasia}"
+									itemValue="#{empresa.id}" />
+
+							</p:selectOneMenu>
+							<h:outputText value="Nome:*" />
+							<p:inputText value="#{funcionarioBean.funcionario.nome}"
+								required="true" requiredMessage="Nome*" label="Firstname" />
+
+							<h:outputText value="RG:*" />
+							<p:inputText value="#{funcionarioBean.funcionario.rg}"
+								required="true" requiredMessage="RG*" />
+
+							<h:outputText value="CPF:*" />
+							<p:inputMask value="#{funcionarioBean.funcionario.cpf}"
+								mask="999.999.999-99" slotChar="" required="true"
+								requiredMessage="CPF*" />
+
+							<h:outputText value="Data Nascimento:*" />
+							<p:calendar mask="99/99/9999" pattern="dd/MM/yyyy"
+								required="true" requiredMessage="Data*"
+								value="#{funcionarioBean.funcionario.dataNascimento}" />
+
+							<h:outputText value="Endereço:*" />
+							<p:inputText value="#{funcionarioBean.funcionario.endereco}"
+								required="true" requiredMessage="Endereço*" />
+
+							<h:outputText value="Cidade:*" />
+							<p:inputText value="#{funcionarioBean.funcionario.cidade}"
+								required="true" requiredMessage="Cidade*" />
+
+
+						</h:panelGrid>
+
+					</p:panel>
+				</p:tab>
+
+				<p:tab id="foto" title="Foto">
+
+					<h:form id="frmFoto">
+						<p:growl id="growlMensagensId" closable="true" style="width:700px">
+							<p:effect type="pulsate" event="load" delay="500" />
+						</p:growl>
+
+						<h:panelGrid columns="2">
+							<p:panel id="panelFotoId" header="Foto"
+								style="width: 360px;height: 300px;">
+								<p:imageCropper value="#{funcionarioBean.imagemRecortada}"
+									initialCoords="225,75,300,125" id="imageCropperFotoId"
+									rendered="#{funcionarioBean.exibeImagemCapturada}"
+									image="#{pageContext.servletContext.contextPath}/resources/imagens/tmp/#{funcionarioBean.foto}" />
+
+							</p:panel>
+							<p:panel id="panelFotoRecortadaId" header="Foto Recortada"
+								style="width: 360px;height: 300px;">
+								<p:graphicImage
+									value="#{pageContext.servletContext.contextPath}/resources/imagens/tmp/#{funcionarioBean.fotoRecortada}"
+									cache="false" />
+								<br />
+
+							</p:panel>
+							<p:outputPanel autoUpdate="true">
+								<h:panelGroup>
+									<p:commandButton id="webcamId" type="button"
+										icon="fa fa-camera" onclick="PF('dialogCamera').show()" />
+
+
+									<p:commandButton id="recortarId" icon="fa fa-cut"
+										rendered="#{funcionarioBean.exibeImagemCapturada}"
+										action="#{funcionarioBean.recortar}"
+										process="@this imageCropperFotoId"
+										update="growlMensagensId panelFotoRecortadaId salvar"
+										style="margin-left: 10px;" />
+
+
+
+								</h:panelGroup>
+							</p:outputPanel>
+							<p:outputPanel autoUpdate="true">
+								<h:column>
+									<p:commandButton id="salvar" icon="fa fa-save"
+										action="#{funcionarioBean.salvarFoto}"
+										oncomplete="document.getElementById('frm:j_idt32_next').click();"
+										rendered="#{funcionarioBean.exibeSalvar}"
+										process="@this imageCropperFotoId"
+										update="growlMensagensId panelFotoRecortadaId salvar" />
+
+
+								</h:column>
+							</p:outputPanel>
+							<p:spacer />
+						</h:panelGrid>
+						<p:dialog widgetVar="dialogCamera" resizable="false"
+							showHeader="false" width="360" height="300">
+							<h:panelGrid>
+								<p:photoCam widgetVar="photoCam"
+									update="growlMensagensId panelFotoId recortarId"
+									listener="#{funcionarioBean.oncapture}" />
+								<h:panelGrid columns="2">
+									<p:commandButton value="Capturar" type="button" ajax="true"
+										icon="fa fa-camera-retro"
+										onclick="PF('photoCam').capture();PF('dialogCamera').hide()" />
+									<p:commandButton value="Fechar" type="button"
+										icon="fa fa-close" onclick="PF('dialogCamera').hide();" />
+								</h:panelGrid>
+							</h:panelGrid>
+						</p:dialog>
+					</h:form>
+				</p:tab>
+				<p:tab id="digital" title="Digital">
+					<p:panel header="Digital">
+						<p:messages />
+
+						<script>
+							var _app = navigator.appName;
+							var index = 0;
+
+							readyimg = new Image();
+							readyimg.src = "./images/waitingleftindex.gif";
+
+							disconnectedimg = new Image();
+							disconnectedimg.src = "./images/uodisconnected.gif";
+
+							fingertouchimg = new Image();
+							fingertouchimg.src = "./images/touched.gif";
+
+							datacapturedimg = new Image();
+							datacapturedimg.src = "./images/datacaptured2.gif";
+
+							fingergoneimg = new Image();
+							fingergoneimg.src = "./images/waitingleftindex.gif";
+
+							function onFeaturesAcquiredHandler() {
+								document.uareulogo.src = datacapturedimg.src;
+								//document.registerForm.submit();
+							}
+
+							function onTemplateHandler() {
+								if (_app == "Microsoft Internet Explorer") {
+									if (index == 0) {
+										document.registerForm.htbTemplate.value = document.applets["regAppletIE"]
+												.getData();
+										readyimg.src = "./images/waitingrightindex.gif";
+										fingergoneimg.src = readyimg.src;
+										document.uareulogo.src = readyimg.src;
+										document.getElementById("instruction").innerHTML = "Pressione seu dedo indicador <b>DIREITO</b> 4 vezes com firmeza sobre sensor.<br/><br/><br/>";
+										++index;
+										document.registerForm.htbTemplateIndex.value = "4";
+									} else {
+										document.registerForm.htbTemplate2.value = document.applets["regAppletIE"]
+												.getData();
+										document.applets["regAppletIE"]
+												.stopCapture();
+										document.getElementById("instruction").innerHTML = "";
+										document.getElementById("imgHolder").innerHTML = "";
+										index = 0;
+										document.registerForm.htbTemplateIndex2.value = "7";
+										pegarValor();
+									}
+
+								} else if (_app == "Netscape") {
+									if (index == 0) {
+										document.registerForm.htbTemplate.value = document.regAppletFF
+												.getData();
+										readyimg.src = "./images/waitingrightindex.gif";
+										fingergoneimg.src = readyimg.src;
+										document.uareulogo.src = readyimg.src;
+										document.getElementById("instruction").innerHTML = "Pressione seu dedo indicador <b>DIREITO</b> 4 vezes com firmeza sobre o sensor.<br/><br/><br/>";
+										++index;
+										document.registerForm.htbTemplateIndex.value = "4";
+									} else {
+										document.registerForm.htbTemplate2.value = document.regAppletFF
+												.getData();
+										document.regAppletFF.stopCapture();
+										document.getElementById("instruction").innerHTML = "";
+										document.getElementById("imgHolder").innerHTML = "";
+										index = 0;
+										document.registerForm.htbTemplateIndex2.value = "7";
+										pegarValor();
+									}
+								}
+							}
+
+							function onDevConnectedHandler() {
+								document.uareulogo.src = readyimg.src;
+							}
+
+							function onDevDisconnectedHandler() {
+								document.uareulogo.src = disconnectedimg.src;
+							}
+
+							function onFingerTouchedHandler() {
+								document.uareulogo.src = fingertouchimg.src;
+							}
+
+							function onFingerGoneHandler() {
+								document.uareulogo.src = fingergoneimg.src;
+							}
+
+							function onBadPressHandler() {
+								alert("Bad press, try again.");
+							}
+
+							function onErrorHandler() {
+								alert("Error reported from applet");
+							}
+						</script>
+
+						<form action="${pageContext.request.contextPath}/Inclui"
+							method="post" name="registerForm" id="registerForm">
+
+
+							<input type="checkbox" name="startreg" id="startreg" value="ON"
+								onclick="handleClick()" /> Registrar Biometria<br /> <br />
+
+							<div id="instruction"></div>
+							<div id="imgHolder"></div>
+							<div id="bioHolder"></div>
+							<br /> <input id="nmr" name="htbTemplate" type="hidden"
+								readonly="readonly" value="" /><input name="htbTemplateIndex"
+								id="htbTemplateIndex" type="hidden" value="" style="width: 20px" />
+							<input id="nmr2" name="htbTemplate2" type="hidden"
+								readonly="readonly" /> <input name="htbTemplateIndex2"
+								id="htbTemplateIndex2" type="hidden" value=""
+								style="width: 20px" />
+
+						</form>
+
+
+
+						<p:inputText value="#{funcionarioBean.strUm}" id="teste"
+							style="display:none;" />
+						<p:inputText value="#{funcionarioBean.strDois}" id="teste2"
+							style="display:none;" />
+
+						<p:commandButton value="Salvar" id="botaoSalvar"
+							action="#{funcionarioBean.testar}" icon="fa fa-save"
+							style="position: fixed;top: 38%;right: 10px;" update="@form" />
+
+
+						<script>
+							function pegarValor() {
+								var str = document.getElementById("nmr").value;
+								document.getElementById("frm:teste").value = str;
+								var str1 = document.getElementById("nmr2").value;
+								document.getElementById("frm:teste2").value = str1;
+							}
+						</script>
+						<script>
+							function handleClick() {
+
+								var _app = navigator.appName;
+								readyimg.src = "./images/waitingleftindex.gif";
+
+								if (document.getElementById("startreg").checked == false) {
+									//clear innerHTML
+									document.getElementById("bioHolder").innerHTML = "";
+									document.getElementById("instruction").innerHTML = "";
+									document.getElementById("imgHolder").innerHTML = "";
+									return;
+								}
+
+								document.getElementById("instruction").innerHTML = "Pressione seu dedo indicador <b>ESQUERDO</b> 4 vezes com firmeza sobre sensor.<br/><br/><br/>";
+								document.getElementById("imgHolder").innerHTML = '<img id="uareulogo" name="uareulogo" src="./images/uoenabled.gif" border="0" alt="PLEASE PLACE YOUR FINGER ON THE SENSOR!" align="left" /><br/><br/><br/>';
+
+								if (_app == "Microsoft Internet Explorer") {
+
+									objectString = '<embed code="applettest.Main" name="regAppletFF" width="0" height="0" type="application/x-java-applet" pluginspage="http://java.sun.com/javase/downloads" archive="http://localhost/Teste1/RegisterNonGuiApplet.jar" ondevconnectedscript="onDevConnectedHandler" ondevdisconnectedscript="onDevDisconnectedHandler" onfeaturesacquiredscript="onFeaturesAcquiredHandler" onfingertouchedscript="onFingerTouchedHandler" onfingergonescript="onFingerGoneHandler" onerrorscript="onErrorHandler" ontemplateacquiredscript="onTemplateHandler" onbadpressscript="onBadPressHandler" purpose="enrollment" priority="low" scriptable="true" mayscript="true" />';
+
+									document.getElementById("bioHolder").innerHTML = objectString;
+
+								} else if (_app == "Netscape") {
+
+									var objectString = new String();
+
+									objectString = '<embed code="applettest.Main" name="regAppletFF" width="0" height="0" type="application/x-java-applet" pluginspage="http://java.sun.com/javase/downloads" archive="http://localhost/Teste1/RegisterNonGuiApplet.jar" ondevconnectedscript="onDevConnectedHandler" ondevdisconnectedscript="onDevDisconnectedHandler" onfeaturesacquiredscript="onFeaturesAcquiredHandler" onfingertouchedscript="onFingerTouchedHandler" onfingergonescript="onFingerGoneHandler" onerrorscript="onErrorHandler" ontemplateacquiredscript="onTemplateHandler" onbadpressscript="onBadPressHandler" purpose="enrollment" priority="low" scriptable="true" mayscript="true" />';
+
+									document.getElementById("bioHolder").innerHTML = objectString;
+								} else {
+									//Browser not FF or IE, use Applet tag for highest compatibility
+								}
+
+							}
+						</script>
+
+					</p:panel>
+				</p:tab>
+			</p:wizard>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
