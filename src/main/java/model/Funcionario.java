@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 @Table(name = "funcionario")
@@ -30,12 +31,16 @@ public class Funcionario implements Serializable {
 	private Date dataNascimento;
 	private String endereco;
 	private String cidade;
+	
 	@Lob
 	private byte[] indicadorEsquerdo;
+	
 	@Lob
 	private byte[] indicadorDireito;
+	
 	@Lob
 	private byte[] foto;
+	
 	private Empresa empresa;
 
 	public Funcionario() {
@@ -122,7 +127,8 @@ public class Funcionario implements Serializable {
 	public void setRg(String rg) {
 		this.rg = rg;
 	}
-
+	@NotBlank
+	@CPF
 	public String getCpf() {
 		return cpf;
 	}

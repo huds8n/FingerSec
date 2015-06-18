@@ -9,6 +9,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "empresa")
@@ -38,8 +41,10 @@ public class Empresa implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	@Column(nullable = false, length = 60)
+	
+	@NotBlank
+	@Size(max = 80)
+	@Column(nullable = false, length = 80)
 	public String getDescricao() {
 		return descricao;
 	}
@@ -72,7 +77,10 @@ public class Empresa implements Serializable {
 			return false;
 		return true;
 	}
-
+	
+	@NotBlank
+	@Size(max = 80)
+	@Column(nullable = false, length = 80)
 	public String getCnpj() {
 		return cnpj;
 	}
@@ -96,6 +104,7 @@ public class Empresa implements Serializable {
 	public void setNomeFantasia(String nomeFantasia) {
 		this.nomeFantasia = nomeFantasia;
 	}
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 10)
 	public TipoPessoa getTipoPessoa() {
@@ -146,6 +155,7 @@ public class Empresa implements Serializable {
 		this.fone = fone;
 	}
 
+	@Column(nullable = true, length = 100)
 	public String getEmail() {
 		return email;
 	}

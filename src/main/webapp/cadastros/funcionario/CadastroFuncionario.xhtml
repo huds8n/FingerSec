@@ -45,10 +45,11 @@
 
 		<p:focus context="frm" />
 
-		
+
 		<h:form id="frm">
 
-			<p:wizard flowListener="#{funcionarioBean.onFlowProcess}">
+			<p:wizard flowListener="#{funcionarioBean.onFlowProcess}"
+				widgetVar="wz">
 				<p:tab id="personal" title="Dados">
 					<p:panel header="Dados Pessoais">
 						<p:messages id="msg" closable="true">
@@ -92,9 +93,16 @@
 							<p:inputText value="#{funcionarioBean.funcionario.cidade}"
 								required="true" requiredMessage="Cidade*" />
 
+							<h:panelGroup />
+							<p:selectCheckboxMenu id="menu"
+								value="#{funcionarioBean.pertencesSelecionados}"
+								label="Pertences" filter="true" filterMatchMode="startsWith"
+								panelStyle="width:250px">
+								<f:selectItems value="#{funcionarioBean.pertences}" />
+							</p:selectCheckboxMenu>
+
 
 						</h:panelGrid>
-
 					</p:panel>
 				</p:tab>
 
@@ -129,6 +137,7 @@
 
 
 									<p:commandButton id="recortarId" icon="fa fa-cut"
+										title="Recortar"
 										rendered="#{funcionarioBean.exibeImagemCapturada}"
 										action="#{funcionarioBean.recortar}"
 										process="@this imageCropperFotoId"
@@ -143,7 +152,7 @@
 								<h:column>
 									<p:commandButton id="salvar" icon="fa fa-save"
 										action="#{funcionarioBean.salvarFoto}"
-										oncomplete="document.getElementById('frm:j_idt32_next').click();"
+										oncomplete="PF('wz').next()" title="Salvar"
 										rendered="#{funcionarioBean.exibeSalvar}"
 										process="@this imageCropperFotoId"
 										update="growlMensagensId panelFotoRecortadaId salvar" />
@@ -296,9 +305,8 @@
 						<p:inputText value="#{funcionarioBean.strDois}" id="teste2"
 							style="display:none;" />
 
-						<p:commandButton value="Salvar" id="botaoSalvar"
-							action="#{funcionarioBean.testar}" icon="fa fa-save"
-							style="position: fixed;top: 38%;right: 10px;" update="@form" />
+
+
 
 
 						<script>
@@ -347,6 +355,14 @@
 						</script>
 
 					</p:panel>
+					<p:toolbar>
+						<p:toolbarGroup align="right">
+							<p:commandButton value="Salvar" id="botaoSalvar"
+								action="#{funcionarioBean.guardar}" icon="fa fa-save"
+								update="@form" />
+						</p:toolbarGroup>
+					</p:toolbar>
+
 				</p:tab>
 			</p:wizard>
 		</h:form>

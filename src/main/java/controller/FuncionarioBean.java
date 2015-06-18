@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -52,12 +53,22 @@ public class FuncionarioBean implements Serializable {
 	private Empresa empresa;
 	private boolean skip;
 	private Long idEmpresa;
+	private String[] pertencesSelecionados;
+	private List<String> pertences;
 
 	@Inject
 	private FuncionarioService funcService;
 
 	public FuncionarioBean() {
 
+	}
+
+	@PostConstruct
+	public void preencherPertences() {
+		pertences = new ArrayList<String>();
+		pertences.add("Celular");
+		pertences.add("Carteira");
+		pertences.add("Chave");
 	}
 
 	public void buscar() throws NegocioException {
@@ -68,7 +79,7 @@ public class FuncionarioBean implements Serializable {
 				.getExternalContext().getContext();
 	}
 
-	public void testar() {
+	public void guardar() {
 		empresa = new Empresa();
 		try {
 			empresa = empresaService.porID(idEmpresa);
@@ -129,8 +140,8 @@ public class FuncionarioBean implements Serializable {
 		funcionario.setFoto(imagemRecortada.getBytes());
 		FacesContext.getCurrentInstance().addMessage(
 				null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"Foto SALVA, clique em Next!", "Informação"));
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Foto SALVA!",
+						"Informação"));
 	}
 
 	// metodos da foto
@@ -346,6 +357,22 @@ public class FuncionarioBean implements Serializable {
 
 	public void setStrTres(String strTres) {
 		this.strTres = strTres;
+	}
+
+	public List<String> getPertences() {
+		return pertences;
+	}
+
+	public void setPertences(List<String> pertences) {
+		this.pertences = pertences;
+	}
+
+	public String[] getPertencesSelecionados() {
+		return pertencesSelecionados;
+	}
+
+	public void setPertencesSelecionados(String[] pertencesSelecionados) {
+		this.pertencesSelecionados = pertencesSelecionados;
 	}
 
 }
