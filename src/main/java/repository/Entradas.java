@@ -66,5 +66,16 @@ public class Entradas implements Serializable {
 						Entrada.class).setParameter("data", data)
 				.getResultList();
 	}
+	
+	@SuppressWarnings("deprecation")
+	public List<Entrada> porDataAtivos(Date data) {
+		data.setHours(0);
+		data.setMinutes(0);
+		data.setSeconds(0);
+		return this.manager
+				.createQuery("select e from Entrada e where e.data  >= :data and e.status='ATIVO'",
+						Entrada.class).setParameter("data", data)
+				.getResultList();
+	}
 
 }

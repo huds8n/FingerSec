@@ -86,6 +86,12 @@ public class FuncionarioBean implements Serializable {
 		} catch (NegocioException e1) {
 			e1.printStackTrace();
 		}
+		String pertences = "";
+		for (int i = 0; i < pertencesSelecionados.length; i++) {
+			pertences += pertencesSelecionados[i] + ";";
+
+		}
+		this.funcionario.setPertences(pertences);
 		DPFPFeatureSet templateDedoEsquerdo;
 		DPFPFeatureSet templateDedoDireito;
 		templateDedoEsquerdo = DPFPGlobal.getFeatureSetFactory()

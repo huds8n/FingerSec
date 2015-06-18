@@ -24,15 +24,14 @@
 						action="#{empresaBean.salvar}" update="@form"
 						validateClient="false" />
 				</p:toolbarGroup>
-				<p:toolbarGroup align="right">
-					<p:button value="Pesquisa" icon="fa fa-search" />
-				</p:toolbarGroup>
+			
 			</p:toolbar>
 
 			<p:panelGrid columns="4" id="painel"
 				style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
 				<p:outputLabel value="Tipo" for="categoria" />
-				<p:selectOneMenu id="categoria" value="#{empresaBean.tipoPessoa}">
+				<p:selectOneMenu id="categoria" value="#{empresaBean.tipoPessoa}"
+					required="true" requiredMessage="Selecione o tipo">
 					<f:selectItem itemLabel="Selecione o tipo" />
 					<f:selectItems value="#{empresaBean.tipos}" />
 					<p:ajax listener="#{empresaBean.pegarMascara}"
@@ -40,11 +39,12 @@
 				</p:selectOneMenu>
 
 				<p:outputLabel value="Razão Social" for="sku" />
-				<p:inputText id="sku" size="40" maxlength="20"
+				<p:inputText id="sku" size="40" maxlength="40"
 					value="#{empresaBean.empresa.razãoSocial}" />
 
 				<p:outputLabel value="Nome Fantasia" for="nome" />
-				<p:inputText id="nome" size="40" maxlength="80"
+				<p:inputText id="nome" size="40" maxlength="80" required="true"
+					requiredMessage="Nome Fantasia Não pode estar em branco"
 					value="#{empresaBean.empresa.nomeFantasia}" />
 
 
@@ -54,12 +54,15 @@
 				</p:inputMask>
 
 				<p:outputLabel value="Responsavél" for="estoque" />
-				<p:inputText id="estoque" size="40" maxlength="40"
+				<p:inputText id="estoque" size="40" maxlength="40" required="true"
+					requiredMessage="Responsavel Não pode estar em branco"
 					value="#{empresaBean.empresa.nomeResponsavel}" />
 
 				<p:outputLabel value="Fone Responsavél" for="estoque7" />
 				<p:inputMask mask="(99)9999-9999" id="estoque7" size="40"
-					maxlength="40" value="#{empresaBean.empresa.descricao}" />
+					required="true"
+					requiredMessage="Fone Responsavel Não pode estar em branco"
+					maxlength="40" value="#{empresaBean.empresa.foneResponsavel}" />
 
 				<p:outputLabel value="Endereço" for="estoque1" />
 				<p:inputText id="estoque1" size="40" maxlength="40"
@@ -112,11 +115,27 @@
 				<p:outputLabel value="Fone" for="estoque6" />
 				<p:inputMask mask="(99)9999-9999" id="estoque6" size="40"
 					maxlength="40" value="#{empresaBean.empresa.fone}" />
-
-
-
-
 			</p:panelGrid>
+			<br />
+			<p:dataTable var="empresa" value="#{empresaBean.listaEmpresas}">
+				<f:facet name="header">Todas as Empresas</f:facet>
+				<p:column headerText="Nome Fantasia"
+					filterBy="#{empresa.nomeFantasia}" sortBy="#{empresa.nomeFantasia}">
+					<h:outputText value="#{empresa.nomeFantasia}" />
+				</p:column>
+
+				<p:column headerText="CNPJ/CPF">
+					<h:outputText value="#{empresa.cnpj}" />
+				</p:column>
+
+				<p:column headerText="Responsavél">
+					<h:outputText value="#{empresa.nomeResponsavel}" />
+				</p:column>
+
+				<p:column headerText="Fone Responsavél">
+					<h:outputText value="#{empresa.foneResponsavel}" />
+				</p:column>
+			</p:dataTable>
 		</h:form>
 	</ui:define>
 </ui:composition>

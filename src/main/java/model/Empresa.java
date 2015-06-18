@@ -19,7 +19,7 @@ public class Empresa implements Serializable {
 
 	private static final long serialVersionUID = -2566277659024524348L;
 	private Long id;
-	private String descricao;
+
 
 	private String cnpj;
 	private String razãoSocial;
@@ -28,7 +28,7 @@ public class Empresa implements Serializable {
 
 	private TipoPessoa tipoPessoa;
 
-	private String endereco, cidade, uf, cep, fone, email;
+	private String endereco, cidade, uf, cep, fone, foneResponsavel, email;
 
 	private String nomeResponsavel;
 
@@ -42,16 +42,7 @@ public class Empresa implements Serializable {
 		this.id = id;
 	}
 	
-	@NotBlank
-	@Size(max = 80)
-	@Column(nullable = false, length = 80)
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+	
 
 	@Override
 	public int hashCode() {
@@ -94,7 +85,7 @@ public class Empresa implements Serializable {
 	}
 
 	public void setRazãoSocial(String razãoSocial) {
-		this.razãoSocial = razãoSocial;
+		this.razãoSocial = razãoSocial.toUpperCase();
 	}
 
 	public String getNomeFantasia() {
@@ -102,7 +93,7 @@ public class Empresa implements Serializable {
 	}
 
 	public void setNomeFantasia(String nomeFantasia) {
-		this.nomeFantasia = nomeFantasia;
+		this.nomeFantasia = nomeFantasia.toUpperCase();
 	}
 
 	@Enumerated(EnumType.STRING)
@@ -128,7 +119,7 @@ public class Empresa implements Serializable {
 	}
 
 	public void setCidade(String cidade) {
-		this.cidade = cidade;
+		this.cidade = cidade.toUpperCase();
 	}
 
 	public String getUf() {
@@ -169,7 +160,15 @@ public class Empresa implements Serializable {
 	}
 
 	public void setNomeResponsavel(String nomeResponsavel) {
-		this.nomeResponsavel = nomeResponsavel;
+		this.nomeResponsavel = nomeResponsavel.toUpperCase();
+	}
+
+	public String getFoneResponsavel() {
+		return foneResponsavel;
+	}
+
+	public void setFoneResponsavel(String foneResponsavel) {
+		this.foneResponsavel = foneResponsavel;
 	}
 
 }

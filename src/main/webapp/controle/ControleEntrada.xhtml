@@ -120,7 +120,7 @@
 			<audio id="som" src="media/audio/#{verificaBean.som}" />
 
 			<p:outputPanel rendered="#{verificaBean.exibirPainel}" id="painel"
-				style="left:63%; top:50px; position:absolute;border:2px solid black"
+				style="left:60%; top:50px; position:absolute;border:2px solid black"
 				autoUpdate="true">
 				<p:panelGrid columns="2" rendered="#{verificaBean.exibirPainel}">
 					<f:facet name="header">
@@ -133,7 +133,7 @@
 				</p:panelGrid>
 			</p:outputPanel>
 			<p:outputPanel rendered="#{verificaBean.exibirPainel}" id="painelS"
-				style="left:80%; top:50px; position:absolute;border:2px solid black"
+				style="left:73%; top:50px; position:absolute;border:2px solid black"
 				autoUpdate="true">
 				<p:panelGrid columns="2" rendered="#{verificaBean.exibirPainel}">
 					<h:outputText value="Nome:" />
@@ -143,8 +143,8 @@
 					<h:outputText
 						value="#{verificaBean.funcionario.empresa.nomeFantasia}" />
 
-					<h:outputText value="RG:" />
-					<h:outputText value="#{verificaBean.funcionario.rg}" />
+					<h:outputText value="Pertences: " />
+					<h:outputText value="#{verificaBean.funcionario.pertences}" />
 
 					<h:outputText value="CPF:" />
 					<h:outputText value="#{verificaBean.funcionario.cpf}" />

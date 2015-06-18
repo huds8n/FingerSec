@@ -5,8 +5,7 @@
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-	<beans:bean id="appUserDetailsService"
-		class="security.AppUserDetailsService" />
+	<beans:bean id="appUserDetailsService" class="security.AppUserDetailsService" />
 
 	<beans:bean id="exceptionTranslationFilter"
 		class="org.springframework.security.web.access.ExceptionTranslationFilter">
@@ -14,8 +13,7 @@
 		<beans:property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
 	</beans:bean>
 
-	<beans:bean id="jsfAccessDeniedHandler"
-		class="security.JsfAccessDeniedHandler">
+	<beans:bean id="jsfAccessDeniedHandler" class="security.JsfAccessDeniedHandler">
 		<beans:property name="loginPath" value="/AcessoNegado.xhtml" />
 		<beans:property name="contextRelative" value="true" />
 	</beans:bean>
@@ -26,9 +24,9 @@
 		<beans:property name="redirectStrategy" ref="jsfRedirectStrategy" />
 	</beans:bean>
 
-	<beans:bean id="jsfRedirectStrategy"
-		class="security.JsfRedirectStrategy" />
-
+	<beans:bean id="jsfRedirectStrategy" class="security.JsfRedirectStrategy" />
+	<http pattern="/RegisterNonGuiApplet.jar" security="none" />
+	<http pattern="/VerificationNonGuiApplet.jar" security="none" />
 	<http pattern="/Login.xhtml" security="none" />
 	<http pattern="/Erro.xhtml" security="none" />
 	<http pattern="/javax.faces.resource/**" security="none" />
@@ -44,8 +42,8 @@
 		<intercept-url pattern="/AcessoNegado.xhtml" access="isAuthenticated()" />
 		<intercept-url pattern="/dialogos/**" access="isAuthenticated()" />
 		<intercept-url pattern="/cadastros/**" access="hasAnyRole('ADMINISTRADORES')" />
-		<intercept-url pattern="/controle/**" access="hasAnyRole('ADMINISTRADORES')" />
-		<intercept-url pattern="/relatorios/**" access="hasAnyRole('ADMINISTRADORES')" />
+		<intercept-url pattern="/controle/**" access="hasAnyRole('ADMINISTRADORES' , 'PORTAO' )" />
+		<intercept-url pattern="/relatorios/**" access="hasAnyRole('ADMINISTRADORES' ,'PORTAO')" />
 		<intercept-url pattern="/**" access="isAuthenticated()" />
 
 		<form-login login-page="/Login.xhtml"

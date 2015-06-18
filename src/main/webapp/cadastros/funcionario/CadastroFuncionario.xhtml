@@ -81,9 +81,11 @@
 								requiredMessage="CPF*" />
 
 							<h:outputText value="Data Nascimento:*" />
-							<p:calendar mask="99/99/9999" pattern="dd/MM/yyyy"
+							<p:inputMask mask="99/99/9999" pattern="dd/MM/yyyy"
 								required="true" requiredMessage="Data*"
-								value="#{funcionarioBean.funcionario.dataNascimento}" />
+								value="#{funcionarioBean.funcionario.dataNascimento}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:inputMask>
 
 							<h:outputText value="Endereço:*" />
 							<p:inputText value="#{funcionarioBean.funcionario.endereco}"
@@ -92,6 +94,10 @@
 							<h:outputText value="Cidade:*" />
 							<p:inputText value="#{funcionarioBean.funcionario.cidade}"
 								required="true" requiredMessage="Cidade*" />
+
+							<h:outputText value="Função: " />
+							<p:inputText value="#{funcionarioBean.funcionario.funcao}"
+								required="true" requiredMessage="Função" />
 
 							<h:panelGroup />
 							<p:selectCheckboxMenu id="menu"

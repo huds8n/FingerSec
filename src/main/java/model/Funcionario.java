@@ -28,9 +28,11 @@ public class Funcionario implements Serializable {
 	private String motivoInativo;
 	private String rg;
 	private String cpf;
+	private String funcao;
 	private Date dataNascimento;
 	private String endereco;
 	private String cidade;
+	private String pertences;
 	
 	@Lob
 	private byte[] indicadorEsquerdo;
@@ -65,7 +67,7 @@ public class Funcionario implements Serializable {
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.nome = nome.toUpperCase();
 	}
 
 	@NotNull
@@ -125,7 +127,7 @@ public class Funcionario implements Serializable {
 	}
 
 	public void setRg(String rg) {
-		this.rg = rg;
+		this.rg = rg.toUpperCase();
 	}
 	@NotBlank
 	@CPF
@@ -150,7 +152,7 @@ public class Funcionario implements Serializable {
 	}
 
 	public void setEndereco(String endereco) {
-		this.endereco = endereco;
+		this.endereco = endereco.toUpperCase();
 	}
 
 	public String getCidade() {
@@ -158,7 +160,7 @@ public class Funcionario implements Serializable {
 	}
 
 	public void setCidade(String cidade) {
-		this.cidade = cidade;
+		this.cidade = cidade.toUpperCase();
 	}
 
 	public byte[] getFoto() {
@@ -183,6 +185,22 @@ public class Funcionario implements Serializable {
 
 	public void setIndicadorDireito(byte[] indicadorDireito) {
 		this.indicadorDireito = indicadorDireito;
+	}
+	@NotNull
+	public String getPertences() {
+		return pertences;
+	}
+
+	public void setPertences(String pertences) {
+		this.pertences = pertences.toUpperCase();
+	}
+	@NotNull
+	public String getFuncao() {
+		return funcao;
+	}
+
+	public void setFuncao(String funcao) {
+		this.funcao = funcao.toUpperCase();
 	}
 
 }

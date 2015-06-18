@@ -37,5 +37,9 @@ public class EntradaService implements Serializable {
 	public List<Entrada> listarPorData(Date data) throws NegocioException {
 		return entradas.porData(data);
 	}
+	
+	public List<Entrada> listarPorDataAtivo(Date data) throws NegocioException {
+		return entradas.porDataAtivos(data);
+	}
 
 }

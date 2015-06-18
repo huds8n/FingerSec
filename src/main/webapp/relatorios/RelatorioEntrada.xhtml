@@ -46,6 +46,13 @@
 				<p:column headerText="Empresa" style="text-align:center !important;">
 					<h:outputText value="#{entrada.funcionario.empresa.nomeFantasia}" />
 				</p:column>
+				<p:column headerText="Data"
+					style="width:60px;text-align:center !important;">
+					<h:outputText value="#{entrada.data}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
 
 				<p:column headerText="Observações"
 					style="text-align:center !important;">

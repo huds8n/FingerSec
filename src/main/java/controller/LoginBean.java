@@ -29,7 +29,7 @@ public class LoginBean implements Serializable {
 	@Inject
 	private HttpServletResponse response;
 	
-	private String email;
+	private String usuario;
 
 	public void preRender() {
 		if ("true".equals(request.getParameter("invalid"))) {
@@ -43,13 +43,15 @@ public class LoginBean implements Serializable {
 		
 		facesContext.responseComplete();
 	}
-	
-	public String getEmail() {
-		return email;
+
+	public String getUsuario() {
+		return usuario;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
+	
+
 	
 }

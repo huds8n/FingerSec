@@ -47,8 +47,6 @@ public class VerificaBean implements Serializable {
 	private List<Funcionario> listaPesquisa = new ArrayList<Funcionario>();
 	private List<Entrada> entradas;
 
-	// UTILIZADO PARA EVIAR DUPLICIDADE DE ENTRADAS
-	private List<Entrada> entradasAtivas;
 	@Inject
 	private FuncionarioService funcService;
 
@@ -81,10 +79,10 @@ public class VerificaBean implements Serializable {
 	@PostConstruct
 	public void buscarFunc() {
 		try {
-			entradasAtivas = new ArrayList<Entrada>();
+			
 			entradas = new ArrayList<Entrada>();
 			funcionario = new Funcionario();
-			entradasAtivas = entradaService.listarPorData(new java.util.Date());
+		
 			listaFuncionarios = funcService.buscarTodos();
 			verificator = DPFPGlobal.getVerificationFactory()
 					.createVerification();
@@ -106,13 +104,13 @@ public class VerificaBean implements Serializable {
 			erro = 0;
 			exibirPainel = false;
 			entradas = new ArrayList<Entrada>();
-			entradas = entradaService.listarPorData(new java.util.Date());
+			entradas = entradaService.listarPorDataAtivo(new java.util.Date());
 			System.out.println("LISTOU HOJE");
 		}
 	}
 
 	public boolean verificarDuplicidade() {
-		for (Entrada entradaAtiva : entradasAtivas) {
+		for (Entrada entradaAtiva : entradas) {
 			Funcionario func = new Funcionario();
 			func = entradaAtiva.getFuncionario();
 			if (func.equals(funcionario)) {
@@ -129,7 +127,7 @@ public class VerificaBean implements Serializable {
 		this.entrada.setObservacao(observacao);
 		try {
 			this.entradaService.salvar(entrada);
-			entradasAtivas.add(this.entrada);
+			entradas.add(this.entrada);
 			entrada = new Entrada();
 			FacesUtil.addInfoMessage("Entrada Realizada");
 
@@ -143,6 +141,7 @@ public class VerificaBean implements Serializable {
 			this.entrada.setStatus(StatusEntrada.INATIVO);
 			this.entrada.setHoraSaida(new java.util.Date());
 			this.entradaService.salvar(entrada);
+			entradas.remove(this.entrada);
 			entrada = new Entrada();
 			FacesUtil.addInfoMessage("Saida Confirmada");
 
@@ -155,8 +154,8 @@ public class VerificaBean implements Serializable {
 	public void verificar() {
 		templateEnviado = DPFPGlobal.getFeatureSetFactory().createFeatureSet(
 				hexStringToByteArray(strDigital));
-		int i;
-		for (i = 0; i < listaFuncionarios.size(); i++) {
+
+		for (int i = 0; i < listaFuncionarios.size(); i++) {
 			Funcionario func = listaFuncionarios.get(i);
 			if (dedo.equalsIgnoreCase("Direito")) {
 				templateArmazenado.deserialize(func.getIndicadorDireito());
@@ -176,7 +175,12 @@ public class VerificaBean implements Serializable {
 					salvarEntrada();
 					return;
 				} else {
-					FacesUtil.addInfoMessage("Duplicidade");
+					alerta = "toydoorbell.wav";
+					som = "duplicidade.mpeg";
+					exibirPainel = false;
+					erro = 0;
+					FacesUtil.addErrorMessage("Funcionário Já Entrou na UP !!"
+							+ funcionario.getNome());
 					return;
 				}
 
@@ -233,31 +237,29 @@ public class VerificaBean implements Serializable {
 				salvarSaida();
 				return;
 			}
-
-			if (entradas.size() - 1 == i) {
-				exibirPainel = false;
-				if (erro > 2) {
-					erro = 0;
-					dedo = "Direito";
-
-				}
-				alerta = "toydoorbell.wav";
-				if (erro == 0) {
-					som = "saidatentenovamente.mpeg";
-				}
-				if (erro == 1) {
-					som = "saidaindicadoresquerdo.mpeg";
-					dedo = "Esquerdo";
-					System.out.println("Dedo: " + dedo);
-				}
-				if (erro == 2) {
-					som = "saida_chameoagente.mpeg";
-					dedo = "Direito";
-				}
-				erro++;
-				FacesUtil.addErrorMessage("ACESSO NEGADO");
-			}
 		}
+
+		exibirPainel = false;
+		if (erro > 2) {
+			erro = 0;
+			dedo = "Direito";
+
+		}
+		alerta = "toydoorbell.wav";
+		if (erro == 0) {
+			som = "saidatentenovamente.mpeg";
+		}
+		if (erro == 1) {
+			som = "saidaindicadoresquerdo.mpeg";
+			dedo = "Esquerdo";
+			System.out.println("Dedo: " + dedo);
+		}
+		if (erro == 2) {
+			som = "saida_chameoagente.mpeg";
+			dedo = "Direito";
+		}
+		erro++;
+		FacesUtil.addErrorMessage("ACESSO NEGADO");
 
 	}
 

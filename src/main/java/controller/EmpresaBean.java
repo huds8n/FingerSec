@@ -1,16 +1,19 @@
 package controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import jsf.FacesUtil;
-import service.EmpresaService;
-import service.NegocioException;
 import model.Empresa;
 import model.TipoPessoa;
+import service.EmpresaService;
+import service.NegocioException;
 
 @Named
 @ViewScoped
@@ -23,18 +26,29 @@ public class EmpresaBean implements Serializable {
 	@Inject
 	private EmpresaService empresaService;
 
+	private List<Empresa> listaEmpresas;
+
 	public EmpresaBean() {
-		inicializar();
+	
 	}
 
+	@PostConstruct
 	public void inicializar() {
+		listaEmpresas = new ArrayList<Empresa>();
 		empresa = new Empresa();
+		try {
+			listaEmpresas = empresaService.listarTodas();
+		} catch (NegocioException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void salvar() {
 		try {
 			this.empresa.setTipoPessoa(TipoPessoa.JURIDICA);
 			this.empresa = empresaService.salvar(this.empresa);
+			listaEmpresas.add(empresa);
 			empresa = new Empresa();
 			FacesUtil.addInfoMessage("Empresa salvo com sucesso!");
 		} catch (NegocioException ne) {
@@ -80,6 +94,14 @@ public class EmpresaBean implements Serializable {
 
 	public void setTipoPessoa(String tipoPessoa) {
 		this.tipoPessoa = tipoPessoa;
+	}
+
+	public List<Empresa> getListaEmpresas() {
+		return listaEmpresas;
+	}
+
+	public void setListaEmpresas(List<Empresa> listaEmpresas) {
+		this.listaEmpresas = listaEmpresas;
 	}
 
 }
