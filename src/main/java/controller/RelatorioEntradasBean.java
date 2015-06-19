@@ -32,7 +32,7 @@ public class RelatorioEntradasBean implements Serializable {
 		if (listaEntradas.isEmpty()) {
 			FacesUtil.addInfoMessage("Sem Registros");
 		}
-		System.out.println(listaEntradas.size());
+		
 	}
 
 	public Date getDataInicio() {

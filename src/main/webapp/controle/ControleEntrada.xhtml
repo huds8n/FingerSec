@@ -276,6 +276,7 @@
 					<p:panelGrid columns="2" columnClasses="label,value">
 						<f:facet name="header">
 							<p:graphicImage value="#{verificaBean.imagemDinamica}" id="foto"
+								rendered="#{verificaBean.exibirPainel}"
 								style="width:160px;height:160px" cache="false">
 								<f:param name="id_imagem" value="#{verificaBean.funcionario.id}" />
 							</p:graphicImage>

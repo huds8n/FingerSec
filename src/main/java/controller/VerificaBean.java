@@ -79,10 +79,10 @@ public class VerificaBean implements Serializable {
 	@PostConstruct
 	public void buscarFunc() {
 		try {
-			
+
 			entradas = new ArrayList<Entrada>();
 			funcionario = new Funcionario();
-		
+
 			listaFuncionarios = funcService.buscarTodos();
 			verificator = DPFPGlobal.getVerificationFactory()
 					.createVerification();
@@ -105,7 +105,7 @@ public class VerificaBean implements Serializable {
 			exibirPainel = false;
 			entradas = new ArrayList<Entrada>();
 			entradas = entradaService.listarPorDataAtivo(new java.util.Date());
-			System.out.println("LISTOU HOJE");
+			
 		}
 	}
 
@@ -199,7 +199,7 @@ public class VerificaBean implements Serializable {
 		if (erro == 1) {
 			som = "restrito_indicadoresquerdo.mpeg";
 			dedo = "Esquerdo";
-			System.out.println("Dedo: " + dedo);
+			
 		}
 		if (erro == 2) {
 			som = "bloqueado_chame_agente.mpeg";
@@ -216,11 +216,9 @@ public class VerificaBean implements Serializable {
 		for (int i = 0; i < entradas.size(); i++) {
 			Entrada entr = entradas.get(i);
 			if (dedo.equalsIgnoreCase("Direito")) {
-				System.out.println("Direito");
 				templateArmazenado.deserialize(entr.getFuncionario()
 						.getIndicadorDireito());
 			} else {
-				System.out.println("Esquerdo");
 				templateArmazenado.deserialize(entr.getFuncionario()
 						.getIndicadorEsquerdo());
 			}
@@ -252,7 +250,7 @@ public class VerificaBean implements Serializable {
 		if (erro == 1) {
 			som = "saidaindicadoresquerdo.mpeg";
 			dedo = "Esquerdo";
-			System.out.println("Dedo: " + dedo);
+		
 		}
 		if (erro == 2) {
 			som = "saida_chameoagente.mpeg";
@@ -316,14 +314,8 @@ public class VerificaBean implements Serializable {
 	}
 
 	public StreamedContent getImagemDinamicaTable(byte[] foto) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-			// So, we're rendering the view. Return a stub StreamedContent so
-			// that it will generate right URL.
-			return new DefaultStreamedContent();
-		} else {
-			return new DefaultStreamedContent(new ByteArrayInputStream(foto));
-		}
+
+		return new DefaultStreamedContent(new ByteArrayInputStream(foto));
 
 	}
 

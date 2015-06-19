@@ -157,9 +157,6 @@ public class FuncionarioBean implements Serializable {
 		arquivoFoto = servletContext.getRealPath("") + File.separator
 				+ "resources" + File.separator + "imagens" + File.separator
 				+ "tmp" + File.separator + foto;
-		System.out.println(servletContext.getRealPath("") + File.separator
-				+ "resources" + File.separator + "imagens" + File.separator
-				+ "tmp" + File.separator + foto);
 		criaArquivo(arquivoFoto, captureEvent.getData());
 		exibeImagemCapturada = true;
 		FacesContext.getCurrentInstance().addMessage(
