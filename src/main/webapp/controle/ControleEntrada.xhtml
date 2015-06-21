@@ -80,7 +80,7 @@
 				height="50">
 				<param name="code" value="applettest.Main" />
 				<param name="archive"
-					value="http://localhost/Teste1/VerificationNonGuiApplet.jar" />
+					value="http://10.91.144.26/Teste1/VerificationNonGuiApplet.jar" />
 				<param name="separate_jvm" VALUE="true" />
 				<param name="onDevConnectedScript" value="onDevConnectedHandler" />
 				<param name="onDevDisconnectedScript"
@@ -243,6 +243,32 @@
 						icon="fa fa-list">
 						<f:param name="funcionario" value="#{func.id}" />
 					</p:button>
+
+				</p:column>
+
+				<p:column style="width:120px;text-align: center" headerText="TJDFT">
+
+
+					<p:commandButton icon="fa fa-gavel" value="1ª"
+						title="Consultar Processos TJDFT 1ª Instância"
+						onclick="window.open('http://tjdf19.tjdft.jus.br/cgi-bin/tjcgi1?NXTPGM=tjhtml101&amp;submit=ok&amp;SELECAO=2&amp;CHAVE=#{verificaBean.nomeProcesso(func.nome)}&amp;CIRC=ZZ&amp;CHAVE1=&amp;ORIGEM=INTER');">
+					</p:commandButton>
+
+					<p:commandButton icon="fa fa-gavel" value="2ª"
+						title="Consultar Processos TJDFT 2ª Instância"
+						onclick="window.open('http://tjdf19.tjdft.jus.br/cgi-bin/tjcgi1?NXTPGM=plhtml02&amp;TitCabec=2%AA+Inst%E2ncia+%3E+Consulta+Processual&amp;SELECAO=2&amp;CHAVE=#{verificaBean.nomeProcesso(func.nome)}&amp;COMMAND=ok&amp;ORIGEM=INTER');">
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="STJ"
+					style="width:90px;text-align: center">
+
+					<p:commandButton icon="fa fa-gavel" value="STJ"
+						title="Consultar Processos STJ"
+						onclick="window.open('https://ww2.stj.jus.br/processo/pesquisa/?tipoPesquisaSecundaria=tipoPesquisaParteNome&amp;tipoPesquisa=tipoPesquisaParteNome&amp;termo=#{verificaBean.nomeProcesso(func.nome)}&amp;termoSecundario=#{verificaBean.nomeProcesso(func.nome)}&amp;tipoOperacaoFonetica=igual&amp;totalRegistrosPorPagina=40&amp;aplicacao=processos.ea');">
+					</p:commandButton>
+
+
+
 
 				</p:column>
 

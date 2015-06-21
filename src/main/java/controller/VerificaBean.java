@@ -2,6 +2,7 @@ package controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +76,11 @@ public class VerificaBean implements Serializable {
 		dedo = "Direito";
 
 	}
-
+	@SuppressWarnings("deprecation")
+	public String nomeProcesso(String str) {
+		str = URLEncoder.encode(str);
+		return str;
+	}
 	@PostConstruct
 	public void buscarFunc() {
 		try {
