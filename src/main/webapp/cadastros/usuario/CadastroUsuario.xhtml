@@ -1,0 +1,88 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Cadastro User</ui:define>
+
+	<ui:define name="corpo">
+
+
+		<h1>Cadastro Usuário do Sistema</h1>
+
+
+
+		<h:form id="frmCadastro">
+			<p:messages id="messages" autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 20px">
+				<p:toolbarGroup>
+					<p:commandButton value="Salvar" icon="ui-icon-disk"
+						id="botaoSalvar" action="#{cadastroUsuarioBean.salvar}"
+						update="frmCadastro" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:toolbarGroup align="right">
+						<p:button value="Cancelar" icon="ui-icon-close"
+							outcome="/Home.xhtml" />
+					</p:toolbarGroup>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+
+
+
+
+
+
+				<p:outputLabel value="Nome Completo:" for="cadastroUser2" />
+				<p:inputMask id="cadastroUser2" size="20" maxlength="80"
+					required="true" requiredMessage="Por favor informe o nome completo"
+					value="#{cadastroUsuarioBean.usuario.nome}" />
+
+
+				<p:outputLabel value="Login:" for="cadastropasswdcmfemail" />
+
+				<p:inputMask id="cadastropasswdcmfemail" size="20" maxlength="80"
+					required="true" requiredMessage="Por favor informe o login"
+					value="#{cadastroUsuarioBean.usuario.login}" />
+
+
+				<p:outputLabel value="Senha:" for="cadastropasswd" />
+
+				<p:password id="cadastropasswd" size="20" maxlength="80"
+					required="true" requiredMessage="Por favor informe  a senha"
+					value="#{cadastroUsuarioBean.senha}" feedback="true"
+					weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte"
+					validatorMessage="Senhas Diferentes"
+					promptLabel="Informe uma Senha" match="cadastropasswdcmf">
+				</p:password>
+
+
+
+				<p:outputLabel value="Confirme a Senha:" for="cadastropasswdcmf" />
+				<p:password id="cadastropasswdcmf" size="20" maxlength="80"
+					value="#{cadastroUsuarioBean.senha2}" feedback="true"
+					weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte"
+					promptLabel="Repita a Senha" />
+
+
+
+
+				<p:outputLabel value="Grupo" for="cadastrogrupo" />
+				<p:selectManyButton id="cadastrogrupo" required="true"
+					requiredMessage="Selecione o Grupo"
+					value="#{cadastroUsuarioBean.gruposSelecionados}">
+					<f:selectItems value="#{cadastroUsuarioBean.grupos}" var="grupo"
+						itemLabel="#{grupo.nome}" itemValue="#{grupo.nome}" />
+				</p:selectManyButton>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
